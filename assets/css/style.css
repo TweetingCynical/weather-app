@@ -1,0 +1,43 @@
+/* Add stored options for main and secondary colours used in site */
+:root {
+  --mainColor: #3c1934;
+  --mainColorOP: #3c1934a0;
+  --secondaryColor: #aa3619;
+  --secondaryColorOP: #aa361980;
+}
+
+html {
+  max-width: 1280px;
+  background-color: var(--mainColor);
+  color: white;
+  margin: 0 auto;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  padding-bottom: 50px;
+  background-color: white;
+  color: var(--mainColor);
+}
+
+.container {
+  width: 100%;
+}
+
+.btn-main {
+  background-color: var(--secondaryColor);
+  color: white;
+  border: 2px solid var(--mainColor);
+  padding: 10px;
+  margin: 5px;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2), 0 8px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+}
+
+.btn-main:hover {
+  background-color: var(--mainColor);
+  transform: scale(1.05);
+  transform-origin: center;
+}
