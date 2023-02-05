@@ -14,13 +14,19 @@ let userHistory = [];
 function createButtons() {
   searchHistoryAside.html("");
   for (let index = 0; index < userHistory.length; index++) {
-    let btn = $("<button>")
+    const btn = $("<button>")
       .addClass("btn-main")
       .attr("type", "button")
       .attr("id", userHistory[index])
       .text(userHistory[index]);
     searchHistoryAside.append(btn);
   }
+  const btn = $("<button>")
+    .addClass("btn-clear bg-primary")
+    .attr("type", "button")
+    .attr("id", "clear")
+    .text("Clear History");
+  searchHistoryAside.append(btn);
 }
 
 // Check search history from localStorage
@@ -206,9 +212,20 @@ function historyClick(event) {
   input.val("");
 }
 
+// Clear all search city history
+function clearHistory(event) {
+  if (!$(event.target).hasClass("btn-clear")) {
+    return;
+  }
+  let searched = [];
+  localStorage.setItem("searched", JSON.stringify(searched));
+  checkHistory();
+}
+
 // Check history to create buttons from localStorage
 checkHistory();
 
 // Create on click event listener for search form
 searchForm.on("submit", submitSearch);
 searchHistoryAside.on("click", historyClick);
+searchHistoryAside.on("click", clearHistory);

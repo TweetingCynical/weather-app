@@ -60,7 +60,8 @@ header {
   background-color: var(--mainColor);
 }
 
-.btn-main {
+.btn-main,
+.btn-clear {
   background-color: var(--secondaryColor);
   color: white;
   border: 1px solid white;
@@ -70,7 +71,8 @@ header {
   border-radius: 5px;
 }
 
-.btn-main:hover {
+.btn-main:hover,
+.btn-clear:hover {
   background-color: white;
   color: var(--mainColor);
   transform: scale(1.05);
