@@ -149,7 +149,7 @@ Some of the key JavaScript skills being utilised:
 - Add a map section so that user can visually see that they have chosen the correct city;
 - Add an option to select a different city than the first in the api list;
 - ✅ ~~Add button to clear history from localStorage;~~
-- Adjust .filter() .includes() to take into account the timezone of the city searched for;
+- ✅ ~~Adjust .filter() .includes() to take into account the timezone of the city searched for;~~
 
 ## License
 

@@ -79,14 +79,14 @@ function getWeather(location) {
 
   // Use coordinates to get weather data
   let queryWeatherURL = `${initAPIURL}/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=${myKey}`;
-  console.log(queryWeatherURL);
 
   $.ajax({
     url: queryWeatherURL,
     method: "GET",
   }).then(function (data) {
     showCurrentWeather(cityName, data.list[0]);
-    showForecastWeather(data.list);
+    console.log(data);
+    showForecastWeather(data.city.timezone, data.list);
   });
 }
 
@@ -132,12 +132,49 @@ function showCurrentWeather(city, weatherInfo) {
   today.append(card);
 }
 
+function adjustTimeZone(timezone) {
+  let timezoneFilters = [
+    "12:00:00",
+    "12:00:00",
+    "12:00:00",
+    "15:00:00",
+    "15:00:00",
+    "15:00:00",
+    "18:00:00",
+    "18:00:00",
+    "18:00:00",
+    "21:00:00",
+    "21:00:00",
+    "21:00:00",
+    "00:00:00",
+    "00:00:00",
+    "00:00:00",
+    "03:00:00",
+    "03:00:00",
+    "03:00:00",
+    "06:00:00",
+    "06:00:00",
+    "06:00:00",
+    "09:00:00",
+    "09:00:00",
+    "09:00:00",
+  ];
+  let timezoneCalc = Math.floor(timezone / 3600);
+  if (timezoneCalc < 0) {
+    timezoneCalc += 23;
+  }
+  console.log(timezoneFilters[timezoneCalc]);
+  return timezoneFilters[timezoneCalc];
+}
+
 // Create elements to display forecasted weather
-function showForecastWeather(weatherInfo) {
+function showForecastWeather(timezone, weatherInfo) {
   forecast.html("");
+  // Timezone correction
+  let indexTZ = adjustTimeZone(timezone);
   // Filter out the records from weatherInfo which are not midday forecasts
   let dailyForecast = weatherInfo.filter(function (info) {
-    return info.dt_txt.includes("12:00:00");
+    return info.dt_txt.includes(indexTZ);
   });
 
   // Create overall forecast area card elements
