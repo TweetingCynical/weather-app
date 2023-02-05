@@ -39,6 +39,16 @@ header {
   justify-content: center;
 }
 
+#search-button,
+#search-input {
+  border: 1px solid white;
+}
+
+#search-button:hover {
+  transform: scale(1.05);
+  transform-origin: left;
+}
+
 #today,
 #forecast {
   width: 100%;
