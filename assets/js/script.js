@@ -157,7 +157,7 @@ function showForecastWeather(weatherInfo) {
     const displayDate = moment(
       dailyForecast[i].dt_txt,
       "YYYY-MM-DD HH:mm:ss"
-    ).format("ddd");
+    ).format("ddd, DD/MM");
     const icon = `${initAPIURL}/img/w/${dailyForecast[i].weather[0].icon}.png`;
     const description = dailyForecast[i].weather[0].description;
     const tempC = dailyForecast[i].main.temp.toFixed(0);
