@@ -80,6 +80,7 @@ function getWeather(location) {
     method: "GET",
   }).then(function (data) {
     showCurrentWeather(cityName, data.list[0]);
+    showForecastWeather(data.list);
   });
 }
 
@@ -123,6 +124,14 @@ function showCurrentWeather(city, weatherInfo) {
   today.append(card);
 }
 
+// Create elements to display forecasted weather
+function showForecastWeather(weatherInfo) {
+  // Filter out the records from weatherInfo which are not midday forecasts
+  let dailyForecast = weatherInfo.filter(function (info) {
+    return info.dt_txt.includes("12:00:00");
+  });
+}
+
 // Search form submit function
 function submitSearch(event) {
   // Prevents refresh of page each time user presses submit
@@ -134,6 +143,7 @@ function submitSearch(event) {
   input.val("");
 }
 
+// Call getCoordinates function if a search history button is clicked
 function historyClick(event) {
   if (!$(event.target).hasClass("btn-main")) {
     return;
