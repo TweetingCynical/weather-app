@@ -36,7 +36,7 @@ Working version of site should look like this at standard screen size:
 
 ### Scope and Purpose
 
-Build an interactive Weather Forecase App with
+Build an interactive Weather Forecase App which utilises openweathermap api, and presents data for the current moment, and also the 5 days ahead.
 
 ### Usage
 
@@ -44,17 +44,112 @@ This site and its codeset are for educational purposes only.
 
 ### Installation
 
+No installation required. Users can search for a city, or press the button of a city they have previously searched for.
+
 <!-- Pseudocode and overview of build -->
 
 ## Pseudocode
 
 Steps to achieving the working Weather Forecase App:
 
+- Check localStorage for stored history;
+  - If there is history, create the buttons for each city using a for loop;
+- Add a searched city to local storage history when a city is searched;
+  - Create a new button when that city is searched;
+- Create api search term and change from city to co-ordinates;
+- Use api data to get weather information for current weather:
+  - TODAY SECTION:
+  - Create a title, icon, temp, wind and humidity element;
+  - Fill those elements with data from api;
+  - Append to TODAY section;
+  - FORECAST SECTION:
+  - Filter out records in api data that are not necessary;
+  - For loop to create a card for each of the next 5 days;
+  - Create a title, icon, temp, wind and humidity element;
+  - Fill those elements with data from api;
+  - Append to FORECAST section;
+- Add event listeners to buttons from search history, so that when they are clicked, they call the same function as the search button
+
 ## Overview of Build
 
 Some of the key JavaScript skills being utilised:
 
+- Use of local storage to store previously searched cities:
+
+  ```javascript
+  function checkHistory() {
+    let searched = localStorage.getItem("searched");
+
+    if (searched) {
+      userHistory = JSON.parse(searched);
+    }
+    createButtons();
+  }
+  ```
+
+- Use of jQuery's ajax to get api data for use in the app:
+
+  ```javascript
+  function getCoordinates(city) {
+    let queryCoordinatesURL = `${initAPIURL}/geo/1.0/direct?q=${city}&limit=5&appid=${myKey}`;
+
+    $.ajax({
+      url: queryCoordinatesURL,
+      method: "GET",
+    }).then(function (data) {
+      if (!data[0]) {
+        alert("This city was not found. Please try again.");
+      } else {
+        appendHistory(city);
+        getWeather(data[0]);
+      }
+    });
+  }
+  ```
+
+- Use of moment.js to handle date formatting:
+
+  ```javascript
+  const displayDateC = moment().format("ddd, Do MMM YYYY"); // Sun, 5th Feb 2023
+  const displayDateF = moment(
+    dailyForecast[i].dt_txt,
+    "YYYY-MM-DD HH:mm:ss"
+  ).format("ddd"); // Mon
+  ```
+
+- Use of stored api information to create image icons:
+
+  ```javascript
+  const icon = `${initAPIURL}/img/w/${weatherInfo.weather[0].icon}.png`;
+  ```
+
+- Use of .filter() and .includes() to remove all api data that relates to times we do not wish to display in the site:
+
+  ```javascript
+  let dailyForecast = weatherInfo.filter(function (info) {
+    return info.dt_txt.includes("12:00:00");
+  });
+  ```
+
+- Use of .hasClass to check information about the button being clicked, and use it to decide what action to take:
+
+  ```javascript
+  function historyClick(event) {
+    if (!$(event.target).hasClass("btn-main")) {
+      return;
+    }
+    let city = $(event.target).attr("id");
+    getCoordinates(city);
+    input.val("");
+  }
+  ```
+
 ### Suggested future changes
+
+- Add a map section so that user can visually see that they have chosen the correct city;
+- Add an option to select a different city than the first in the api list;
+- Add button to clear history from localStorage;
+- Adjust .filter() .includes() to take into account the timezone of the city searched for;
 
 ## License
 
