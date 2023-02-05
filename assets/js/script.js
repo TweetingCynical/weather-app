@@ -132,49 +132,37 @@ function showCurrentWeather(city, weatherInfo) {
   today.append(card);
 }
 
-function adjustTimeZone(timezone) {
-  let timezoneFilters = [
-    "12:00:00",
-    "12:00:00",
-    "12:00:00",
-    "15:00:00",
-    "15:00:00",
-    "15:00:00",
-    "18:00:00",
-    "18:00:00",
-    "18:00:00",
-    "21:00:00",
-    "21:00:00",
-    "21:00:00",
-    "00:00:00",
-    "00:00:00",
-    "00:00:00",
-    "03:00:00",
-    "03:00:00",
-    "03:00:00",
-    "06:00:00",
-    "06:00:00",
-    "06:00:00",
-    "09:00:00",
-    "09:00:00",
-    "09:00:00",
-  ];
-  let timezoneCalc = Math.floor(timezone / 3600);
-  if (timezoneCalc < 0) {
-    timezoneCalc += 23;
-  }
-  console.log(timezoneFilters[timezoneCalc]);
-  return timezoneFilters[timezoneCalc];
-}
+// NOT IN USE
+// function adjustTimeZone(timezone) {
+//   let timezoneFilters = [
+//     "12:00:00",
+//     "15:00:00",
+//     "18:00:00",
+//     "21:00:00",
+//     "00:00:00",
+//     "03:00:00",
+//     "06:00:00",
+//     "09:00:00",
+//   ];
+//   let timezoneCalc = timezone / 3600;
+//   if (timezoneCalc < 0) {
+//     timezoneCalc += 23;
+//   }
+//   timezoneCalc = Math.floor((timezoneCalc + 1) / 3);
+//   console.log(timezoneFilters[timezoneCalc]);
+//   return timezoneFilters[timezoneCalc];
+// }
 
 // Create elements to display forecasted weather
 function showForecastWeather(timezone, weatherInfo) {
   forecast.html("");
-  // Timezone correction
-  let indexTZ = adjustTimeZone(timezone);
+
+  // Timezone correction NOT IN USE
+  // let indexTZ = adjustTimeZone(timezone);
+
   // Filter out the records from weatherInfo which are not midday forecasts
   let dailyForecast = weatherInfo.filter(function (info) {
-    return info.dt_txt.includes(indexTZ);
+    return info.dt_txt.includes("12:00:00");
   });
 
   // Create overall forecast area card elements
