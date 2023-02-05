@@ -32,7 +32,7 @@
 ### Screenshot
 
 Working version of site should look like this at standard screen size:
-![Site Screenshot](./assets/screenshot.png)
+![Site Screenshot](./assets/images/screenshot.png)
 
 ### Scope and Purpose
 
