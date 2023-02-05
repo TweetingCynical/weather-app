@@ -71,32 +71,23 @@ function getWeather(location) {
   let longitude = location.lon;
   let cityName = location.name;
 
-  // Use
-  let queryCurrentWeatherURL = `${initAPIURL}/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${myKey}`;
+  // Use coordinates to get weather data
+  let queryWeatherURL = `${initAPIURL}/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=${myKey}`;
+  console.log(queryWeatherURL);
 
   $.ajax({
-    url: queryCurrentWeatherURL,
+    url: queryWeatherURL,
     method: "GET",
   }).then(function (data) {
-    console.log(data);
-    showCurrentWeather(cityName, data);
+    showCurrentWeather(cityName, data.list[0]);
   });
-
-  // let queryForecastURL = `${initAPIURL}/data/2.5/forecast/daily?lat=${latitude}&lon=${longitude}&cnt=5&units=metric&appid=${myKey}`;
-
-  // $.ajax({
-  //   url: queryForecastURL,
-  //   method: "GET",
-  // }).then(function (data) {
-  //   showForecastWeather(cityName, data.list);
-  // });
 }
 
 function showCurrentWeather(city, weatherInfo) {
   // Set date
   const displayDate = moment().format("dddd, Do MMMM YYYY");
   const icon = `https://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png`;
-  const type = weatherInfo.weather[0].main;
+  // const type = weatherInfo.weather[0].main;
   const description = weatherInfo.weather[0].description;
   const tempC = weatherInfo.main.temp.toFixed(0);
   const wind = (weatherInfo.wind.speed / 1.61).toFixed(1);
@@ -104,20 +95,31 @@ function showCurrentWeather(city, weatherInfo) {
 
   const card = $("<div>").addClass("card shadow p-3 mb-5 bg-white rounded");
   const cardBody = $("<div>").addClass("card-body");
+  const titleDiv = $("<div>").addClass("title-div");
   const cardTitle = $("<h3>")
-    .addClass("h3 card-title")
-    .text(`Current weather for ${weatherInfo.name} (${displayDate})`);
-  const typeEl = $("<p>")
-    .addClass("card-text")
-    .text(`${type} (${description})`);
-  const iconEl = $("<img>").addClass("icon").attr("src", icon);
+    .addClass("h3")
+    .text(`Current weather for ${city} (${displayDate})`);
+  const iconBG = $("<div>").addClass("icon-bg");
+  const iconEl = $("<img>")
+    .addClass("icon")
+    .attr("src", icon)
+    .attr("alt", description);
+  iconBG.append(iconEl);
+  titleDiv.append(cardTitle, iconBG);
+  // const typeEl = $("<p>")
+  //   .addClass("card-text")
+  //   .text(`${type} (${description})`);
   const tempEl = $("<p>").addClass("card-text").text(`Temperature: ${tempC}°C`);
   const windEl = $("<p>").addClass("card-text").text(`Wind: ${wind} mph`);
   const humidityEl = $("<p>")
     .addClass("card-text")
     .text(`Humidity: ${humidity}%`);
-  cardBody.append(cardTitle, typeEl, iconEl, tempEl, windEl, humidityEl);
+  cardBody.append(titleDiv, tempEl, windEl, humidityEl);
   card.append(cardBody);
+
+  // Clear any previously appended current weather data
+  today.html("");
+  // Append new current weather data
   today.append(card);
 }
 
@@ -132,8 +134,18 @@ function submitSearch(event) {
   input.val("");
 }
 
+function historyClick(event) {
+  if (!$(event.target).hasClass("btn-main")) {
+    return;
+  }
+  let city = $(event.target).attr("id");
+  getCoordinates(city);
+  input.val("");
+}
+
 // Check history to create buttons from localStorage
 checkHistory();
 
 // Create on click event listener for search form
 searchForm.on("submit", submitSearch);
+searchHistoryAside.on("click", historyClick);
